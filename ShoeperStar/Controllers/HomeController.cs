@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShoeperStar.Data.Contracts;
 using ShoeperStar.Models;
+using ShoeperStar.Models.ViewModels.Shoe;
 using System.Diagnostics;
 
 namespace ShoeperStar.Controllers
@@ -17,9 +18,13 @@ namespace ShoeperStar.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            // CHANGE IMPLEMENTATION DEPENDING ON WHAT TO SHOES TO DISPLAY
+            var shoesToDisplay = await _repositoryManager.Shoes.GetAllShoes(trackChanges: false, includeNavigationFields: true);
+            var shoesToisplayVM = _mapper.Map<IEnumerable<ShoeVM>>(shoesToDisplay);
+
+            return View(shoesToisplayVM);
         }
 
     }
