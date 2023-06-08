@@ -10,9 +10,9 @@ namespace ShoeperStar.Controllers
     public class HomeController : Controller
     {
         private readonly IRepositoryManager _repositoryManager;
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
 
-        public HomeController(IRepositoryManager repositoryManager, Mapper mapper)
+        public HomeController(IRepositoryManager repositoryManager, IMapper mapper)
         {
             _repositoryManager = repositoryManager;
             _mapper = mapper;
