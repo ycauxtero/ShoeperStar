@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShoeperStar.Data.Contracts;
+using ShoeperStar.Data.Repository;
 
 namespace ShoeperStar.Extensions
 {
@@ -10,5 +12,8 @@ namespace ShoeperStar.Extensions
                                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"))
                                     );
         }
+
+        public static void ConfigureRepositoryManager(this IServiceCollection services) =>
+                                                services.AddScoped<IRepositoryManager, RepositoryManager>();
     }
 }
