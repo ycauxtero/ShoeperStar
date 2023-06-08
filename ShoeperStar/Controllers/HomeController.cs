@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using ShoeperStar.Data.Contracts;
 using ShoeperStar.Models;
 using System.Diagnostics;
 
@@ -6,11 +8,13 @@ namespace ShoeperStar.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IRepositoryManager _repositoryManager;
+        private readonly Mapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IRepositoryManager repositoryManager, Mapper mapper)
         {
-            _logger = logger;
+            _repositoryManager = repositoryManager;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -18,15 +22,5 @@ namespace ShoeperStar.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
