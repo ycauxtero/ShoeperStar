@@ -17,6 +17,7 @@ namespace ShoeperStar
                 SeedBrands(context);
                 SeedCategories(context);
                 SeedGenders(context);
+                SeedShoes(context);
                 SeedUsersAndRolesAsync(applicationBuilder).GetAwaiter().GetResult();
             }
         }
