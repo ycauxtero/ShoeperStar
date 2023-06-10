@@ -1,8 +1,85 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<ShoeVM>
+@inject HashIdService hashIdService
+@{
+    int itemsShownPerCarouselPage = 4;
+    var carouselPageCount = Model.Count() / itemsShownPerCarouselPage;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>@(ViewBag.Title ?? "Trending") <b>Products</b></h2>
+            <div id="shoes-carousel" class="carousel slide" data-ride="carousel" data-interval="0">
+                <!-- Carousel indicators -->
+                <ol class="carousel-indicators">
+                    @for (int i = 0; i < carouselPageCount; i++)
+                    {
+                        if (i == 0)
+                        {
+                            <li data-target="#shoes-carousel" data-slide-to="0" class="active"></li>
+                            continue;
+                        }
+
+                        <li data-target="#shoes-carousel" data-slide-to="@i"></li>
+                    }
+                </ol>
+
+                <!-- Wrapper for carousel items -->
+                <div class="carousel-inner">
+
+                    @for (int i = 0; i < carouselPageCount; i++)
+                    {
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <div class="row">
+                                @for (int j = 0; j < itemsShownPerCarouselPage; j++)
+                                {
+                                    var shoe = Model.ElementAt((i * carouselPageCount) + j);
+
+                                    <div class="col-sm-3">
+                                        <div class="thumb-wrapper">
+                                            <div class="img-box">
+                                                <img src="@shoe.ImageURL" class="img-fluid">
+                                            </div>
+                                            <div class="thumb-content">
+                                                <p class="h4 text-secondary">@shoe.Name</p>
+                                                <div>
+                                                    <a class="text-decoration-none h6 text-secondary"
+                                                       asp-action="Filter" asp-route-brand="@shoe.BrandName">@shoe.BrandName</a>
+                                                </div>
+                                                <p class="item-price"><span>@shoe.Price.ToString("c")</span></p>
+                                                <div class="star-rating">
+                                                    <ul class="list-inline">
+                                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                        <li class="list-inline-item"><i class="fa fa-star-o"></i></li>
+                                                    </ul>
+                                                </div>
+                                                @{
+                                                    var variant = shoe.Variants.Where(v => v.Sizes.Any(s => s.Quantity > 0)).FirstOrDefault();
+                                                    var size = variant.Sizes.Where(s => s.Quantity > 0).FirstOrDefault();
+                                                    var shoeDetailsLink = $@"/Shoes/Details/{hashIdService.EncodeInt(variant.Id)}/{hashIdService.EncodeInt(size.Id)}/{shoe.Name.ToSlug()}-{variant.Color.ToSlug()}-{size.Value.ToSlug()}";
+                                                }
+                                                <a href="@shoeDetailsLink" class="btn btn-primary">View <i class="bi bi-eye"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+                <!-- Carousel controls -->
+                <a class="carousel-control-prev" href="#shoes-carousel" data-slide="prev">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                <a class="carousel-control-next" href="#shoes-carousel" data-slide="next">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
