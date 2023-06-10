@@ -1,6 +1,6 @@
-﻿using ShoeperStar.Models.ViewModels.Variant;
+﻿using ShoeperStar.Models.ViewModels;
 
-namespace ShoeperStar.Models.ViewModels.Shoe
+namespace ShoeperStar.Models.ViewModels
 {
     public class ShoeVM
     {
