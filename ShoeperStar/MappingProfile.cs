@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ShoeperStar.Models.ViewModels.Shoe;
+using ShoeperStar.Models.ViewModels;
 using ShoeperStar.Models;
 
 namespace ShoeperStar
