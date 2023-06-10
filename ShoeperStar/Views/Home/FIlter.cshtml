@@ -1,0 +1,102 @@
+﻿@model ShoeListVM
+@inject HashIdService hashIdService
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-3 p-md-3">
+
+            <h4 class="font-weight-bold">Filter</h4>
+
+            <form method="post" asp-action="Filter">
+                <div class="form-group">
+                    <label class="control-label">Model</label>
+                    <input name="@nameof(ShoeFilterVM.ModelFilter)" value="@Model.ShoeFilter.ModelFilter" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Brand</label>
+                    <select name="@nameof(ShoeFilterVM.BrandFilter)" class="form-control"
+                            asp-items="@(new SelectList(Model.Brands, nameof(BrandVM.Id), nameof(BrandVM.Name), Model.ShoeFilter.BrandFilter))">
+                        <option value="0">All Brands</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Category</label>
+                    <select name="@nameof(ShoeFilterVM.CategoryFilter)" class="form-control"
+                            asp-items="@(new SelectList(Model.Categories, nameof(CategoryVM.Id), nameof(CategoryVM.Name), Model.ShoeFilter.CategoryFilter))">
+                        <option value="0">All Categories</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Gender</label>
+                    <select name="@nameof(ShoeFilterVM.GenderFilter)" class="form-control"
+                            asp-items="@(new SelectList(Model.Genders, nameof(GenderVM.Id), nameof(GenderVM.Name), Model.ShoeFilter.GenderFilter))">
+                        <option value="0">All Gender</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Sort By</label>
+                    <select name="@nameof(ShoeFilterVM.SortField)" class="form-control"
+                            asp-items="@(new SelectList(Model.SortFields, "Key", "Value", Model.ShoeFilter.SortField))">
+                    </select>
+                    <select name="@nameof(ShoeFilterVM.SortOrder)" class="form-control mt-2"
+                            asp-items="@(new SelectList(Model.SortOrders, "Key", "Value", Model.ShoeFilter.SortOrder))">
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Search" class="btn btn-block btn-outline-success" />
+                </div>
+            </form>
+
+        </div>
+
+        <div class="col-md-9">
+            <div class="row">
+                @foreach (var shoeVM in Model.Shoes)
+                {
+                    <div class="col-sm-3 mb-3">
+                        <div class="thumb-wrapper">
+                            <div class="product-item-img-box">
+                                <img src="@shoeVM.ImageURL" class="product-item-img" />
+                            </div>
+                            <div class="thumb-content">
+                                <p class="h4 text-secondary product-item-name">@shoeVM.Name</p>
+                                <div>
+                                    <a class="text-decoration-none d-block h6 text-secondary text-center"
+                                       asp-action="Filter" asp-route-brand="@shoeVM.BrandName">@shoeVM.BrandName</a>
+                                </div>
+                                <p class="product-item-price text-center mb-1"><span>@shoeVM.Price.ToString("c")</span></p>
+                                <div class="star-rating text-center">
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                        <li class="list-inline-item"><i class="fa fa-star-o"></i></li>
+                                    </ul>
+                                </div>
+                                @{
+                                    var variant = shoeVM.Variants.Where(v => v.Sizes.Any(s => s.Quantity > 0)).FirstOrDefault();
+                                    var size = variant.Sizes.Where(s => s.Quantity > 0).FirstOrDefault();
+                                    var shoeDetailsLink = $@"/Shoes/Details/{hashIdService.EncodeInt(variant.Id)}/{hashIdService.EncodeInt(size.Id)}/{shoeVM.Name.ToSlug()}-{variant.Color.ToSlug()}-{size.Value.ToSlug()}";
+                                }
+                                <div class="text-center">
+                                    <a href="@shoeDetailsLink" class="text-dark p-2 border border-secondary rounded">View <i class="bi bi-eye"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
