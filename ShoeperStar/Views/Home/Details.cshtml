@@ -1,0 +1,116 @@
+﻿@model ShoeDetailsVM
+@inject HashIdService hashIdService
+
+
+<div class="row">
+    <div class="col-md-6 offset-md-3 col-sm-8 offset-sm-1">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header text-white bg-info">
+                        <p class="card-text">
+                            <h5 class="card-title">
+                                @Model.Name
+                            </h5>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img src="@Model.ImageURL" width="100%" alt="@Model.Name">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b>Brand: </b>
+                            <a asp-controller="Cinemas" asp-action="Details" asp-route-id="@Model.Brand.Id">
+                                @Model.Brand.Name
+                            </a>
+                        </p>
+                        <p class="card-text">
+                            <b>Gender: </b>
+                            <a asp-controller="Producers" asp-action="Details" asp-route-id="@Model.Gender.Id">
+                                @Model.Gender.Name
+                            </a>
+                        </p>
+                        <p class="card-text">
+                            <b>Category: </b>
+                            <a asp-controller="Producers" asp-action="Details" asp-route-id="@Model.Catergory.Id">
+                                @Model.Catergory.Name
+                            </a>
+                        </p>
+                        <p class="card-text"><b>Price: </b>@Model.Price.ToString("c")</p>
+                        <p class="card-text">
+                            <b>Color:  </b>
+                            <span class="badge"
+                                  style="background-color: @Model.SelectedVariant.ColorHex;
+                                    color: @Model.SelectedVariant.ColorHex;
+                                    border: 1px solid gray">--</span>
+                            <span>@Model.SelectedVariant.Color</span>
+                        </p>
+                        <p class="card-text">
+                            <b>Size: </b>
+                            <span>@Model.SelectedSize.Value</span>
+                        </p>
+                        <p class="card-text">
+                            <b>Available Sizes: </b>
+                            <hr />
+                            @foreach (var size in Model.Sizes)
+                            {
+                                <a class="text-decoration-none"
+                                   href="/Home/Details/@hashIdService.EncodeInt(Model.SelectedVariant.Id)/@hashIdService.EncodeInt(size.Id)/@Model.Name.ToSlug()-@Model.SelectedVariant.Color.ToSlug()-@size.Value.ToSlug()">
+                                    <span class="badge badge-light badge-pill">@size.Value</span>
+
+                                </a>
+                            }
+                        </p>
+                        <p class="card-text">
+                            <b>Available Colors: </b>
+                            <hr />
+                            @foreach (var variant in Model.Variants)
+                            {
+                                var defaultSelectedSize = variant.Sizes.FirstOrDefault(s => s.Quantity > 0);
+                                if (defaultSelectedSize != null)
+                                {
+                                    <a class="text-decoration-none"
+                                       href="/Home/Details/@hashIdService.EncodeInt(variant.Id)/@hashIdService.EncodeInt(defaultSelectedSize.Id)/@Model.Name.ToSlug()-@variant.Color.ToSlug()-@defaultSelectedSize.Value.ToSlug()">
+                                        <span class="badge"
+                                              style="background-color: @variant.ColorHex;
+                                                        color: @variant.ColorHex;
+                                                        border: 1px solid gray">--</span>
+                                        <span>@variant.Color</span>
+                                    </a>
+                                }
+                            }
+                        </p>
+
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="card-footer">
+                        <p class="card-text">
+                            <a class="btn btn-outline-primary float-right" asp-action="Index">
+                                Back to Main
+                            </a>
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-outline-success" asp-controller="Admin" asp-action="Create"
+                                   asp-route-sh_id="@Model.Id">Edit Shoe Details</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-success"
+                                   asp-controller="Cart"
+                                   asp-action="AddItemToCart"
+                                   asp-route-shoeSizeId="@Model.SelectedSize.Id">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.Price.ToString("c"))
+                                </a>
+                            }
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
