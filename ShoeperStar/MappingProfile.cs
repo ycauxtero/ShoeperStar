@@ -15,6 +15,11 @@ namespace ShoeperStar
                 .ForMember(s => s.GenderName, opt => opt.MapFrom(x => x.Gender.Name))
                 .ForMember(s => s.Variants, opt => opt.MapFrom(x => x.Variants));
 
+            CreateMap<Variant, ShoeVariantVM>()
+                .ForMember(vm => vm.Shoe, opt => opt.MapFrom(v => v.Shoe));
+
+            CreateMap<Size, SizeVM>();
+
         }
     }
 }
