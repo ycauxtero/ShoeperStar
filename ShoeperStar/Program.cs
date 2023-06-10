@@ -1,16 +1,31 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using ShoeperStar;
 using ShoeperStar.Extensions;
+using ShoeperStar.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+
 
 builder.Services.ConfigureSql(builder.Configuration);
 
 builder.Services.ConfigureRepositoryManager();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+//Authentication and authorization
+builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+});
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -27,7 +42,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//Authentication & Authorization
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
