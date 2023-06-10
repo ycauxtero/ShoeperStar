@@ -9,8 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.ConfigureSql(builder.Configuration);
-
 builder.Services.ConfigureRepositoryManager();
+
+builder.Services.ConfigureHashIdService(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
