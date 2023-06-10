@@ -1,6 +1,7 @@
 ﻿using ShoeperStar.Models.ViewModels;
 using ShoeperStar.Models;
 using Microsoft.EntityFrameworkCore;
+using ShoeperStar.Models.DTO;
 
 namespace ShoeperStar.Data.Repository.Query
 {
