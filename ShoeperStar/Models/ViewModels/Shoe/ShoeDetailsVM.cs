@@ -1,7 +1,7 @@
 ﻿using ShoeperStar.Models.ViewModels.Size;
 using System;
 
-namespace ShoeperStar.Models.ViewModels.Shoe
+namespace ShoeperStar.Models.ViewModels
 {
     public class ShoeDetailsVM
     {

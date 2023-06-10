@@ -1,4 +1,4 @@
-﻿namespace ShoeperStar.Models.ViewModels.Size
+﻿namespace ShoeperStar.Models.ViewModels
 {
     public class ShoeSizeVM
     {
