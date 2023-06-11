@@ -29,6 +29,10 @@ namespace ShoeperStar
             CreateMap<Shoe, ShoeForCreationVM>();
 
 
+            CreateMap<Variant, VariantVM>();
+            CreateMap<Variant, VariantForCreationVM>()
+                .ForMember(vm => vm.ShoeModel, opt => opt.MapFrom(v => v.Shoe.Name));
+
             CreateMap<Variant, ShoeVariantVM>()
                 .ForMember(vm => vm.Shoe, opt => opt.MapFrom(v => v.Shoe));
 
