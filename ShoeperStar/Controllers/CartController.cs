@@ -41,6 +41,25 @@ namespace ShoeperStar.Controllers
             return RedirectToAction("Filter", "Home");
         }
 
+        public async Task<IActionResult> RemoveItemFromCart(int id)
+        {
+            var userId = GetLoggedInUserId();
+
+            var cartItems = await _repositoryManager.CartItems.GetCartItems(userId);
+            var cartItemToRemove = cartItems.FirstOrDefault(x => x.Id == id);
+
+            if (cartItemToRemove == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _repositoryManager.CartItems.DeleteCartItem(cartItemToRemove);
+            await _repositoryManager.SaveAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
 
 
 
