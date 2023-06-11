@@ -48,7 +48,20 @@ namespace ShoeperStar.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<IActionResult> ShipOutOrder(Guid id)
+        {
+            var order = await _repositoryManager.Orders.GetOrderAsync(id, trackChanges: false);
 
+            if (order == null) return RedirectToAction(nameof(Index));
+
+            order.IsShipped = true;
+
+            _repositoryManager.Orders.UpdateOrder(order);
+            await _repositoryManager.SaveAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
 
 
 
