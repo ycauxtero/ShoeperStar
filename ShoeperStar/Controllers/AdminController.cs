@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ShoeperStar.Data.Contracts;
+using ShoeperStar.Models;
 using ShoeperStar.Models.DTO;
 
 namespace ShoeperStar.Controllers
@@ -51,6 +52,36 @@ namespace ShoeperStar.Controllers
             dto.Category = "Category";
 
             return View("ShoeFilters", dto);
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> Add(BaseForNavModelDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ShoeFilters", dto);
+            }
+
+            switch (dto.Category)
+            {
+                case "Brand":
+                    _repositoryManager.Brands.CreateBrand(new Brand { Name = dto.Name });
+                    await _repositoryManager.SaveAsync();
+                    return RedirectToAction(nameof(Brands));
+
+                case "Gender":
+                    _repositoryManager.Genders.CreateGender(new Gender { Name = dto.Name });
+                    await _repositoryManager.SaveAsync();
+                    return RedirectToAction(nameof(Genders));
+
+                case "Category":
+                    _repositoryManager.Categories.CreateCatergory(new Category { Name = dto.Name });
+                    await _repositoryManager.SaveAsync();
+                    return RedirectToAction(nameof(Categories));
+                default:
+                    return View("Error");
+            }
         }
     }
 }
