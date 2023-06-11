@@ -132,5 +132,42 @@ namespace ShoeperStar.Controllers
                     return View("Error");
             }
         }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> Delete(BaseForNavModelDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ShoeFilters", dto);
+            }
+
+            switch (dto.Category)
+            {
+                case "Brand":
+                    var brand = await _repositoryManager.Brands.GetBrandAsync(dto.Id, trackChanges: false);
+                    _repositoryManager.Brands.DeleteBrand(brand);
+                    await _repositoryManager.SaveAsync();
+                    return RedirectToAction(nameof(Brands));
+
+                case "Gender":
+                    var gender = await _repositoryManager.Genders.GetGenderAsync(dto.Id, trackChanges: false);
+                    _repositoryManager.Genders.DeleteGender(gender);
+                    await _repositoryManager.SaveAsync();
+                    return RedirectToAction(nameof(Genders));
+
+                case "Category":
+                    var category = await _repositoryManager.Categories.GetCatergoryAsync(dto.Id, trackChanges: false);
+                    _repositoryManager.Categories.DeleteCatergory(category);
+                    await _repositoryManager.SaveAsync();
+                    return RedirectToAction(nameof(Categories));
+                default:
+                    return View("Error");
+            }
+        }
+
+
+
+
     }
 }
