@@ -12,6 +12,7 @@ namespace ShoeperStar.Data.Repository
         private IVariantRepository _variants;
         private ISizeRepository _sizes;
         private ICartRepository _cartItems;
+        private IOrderRepository _orders;
 
         public RepositoryManager(AppDbContext context)
         {
@@ -29,7 +30,10 @@ namespace ShoeperStar.Data.Repository
         public IVariantRepository Variants => _variants ??= new VariantRepository(_context);
 
         public ISizeRepository Sizes => _sizes ??= new SizeRepository(_context);
+
         public ICartRepository CartItems => _cartItems ??= new CartRepository(_context);
+
+        public IOrderRepository Orders => _orders ??= new OrderRepository(_context);
 
         public async Task SaveAsync()
         {

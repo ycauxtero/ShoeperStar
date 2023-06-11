@@ -9,6 +9,7 @@
         IVariantRepository Variants { get; }
         ISizeRepository Sizes { get; }
         ICartRepository CartItems { get; }
+        IOrderRepository Orders { get; }
 
         Task SaveAsync();
     }
