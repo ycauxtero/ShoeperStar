@@ -1,0 +1,119 @@
+﻿@model ShoeForCreationVM
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="row">
+
+                <div class="col-md-3 overflow-auto p-3"
+                     style="height: 80vh; border: 1px solid #ced4da; border-radius: .3rem;">
+                    <h4 class="mb-3">All Shoe Models</h4>
+                    @foreach (ShoeVM shoe in ViewBag.Shoes)
+                    {
+                        <div class="py-1">
+                            <a class="h4 badge badge-light p-2"
+                               asp-action="Create" asp-route-sh_id="@shoe.Id">@shoe.Name</a>
+                        </div>
+                    }
+                </div>
+
+                <div class="col-md-9">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="hidden" asp-for="@Model.Id" />
+
+                                    <label asp-for="BrandId" class="control-label"></label>
+                                    <select asp-for="BrandId" class="form-control" asp-items="ViewBag.Brands">
+                                        <option value="0">Select</option>
+                                    </select>
+                                    <span asp-validation-for="BrandId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CategoryId" class="control-label"></label>
+                                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
+                                        <option value="0">Select</option>
+                                    </select>
+                                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="GenderId" class="control-label"></label>
+                                    <select asp-for="GenderId" class="form-control" asp-items="ViewBag.Genders">
+                                        <option value="0">Select</option>
+                                    </select>
+                                    <span asp-validation-for="GenderId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Name" class="control-label"></label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Price" class="control-label"></label>
+                                    <input asp-for="Price" class="form-control" />
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                </div>
+                                <div class="row px-md-2">
+                                    <div class="col-md-4 px-md-2">
+                                        @if (Model.Id == 0)
+                                        {
+                                            <input type="submit" class="btn btn-block btn-outline-success" value="Create" asp-action="Create" />
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" class="btn btn-block btn-outline-primary" value="Update" asp-action="UpdateShoe" />
+                                        }
+                                    </div>
+                                    <div class="col-md-4 px-md-2">
+                                        <a id="clear" class="btn btn-block btn-outline-danger" asp-action="Create">Clear</a>
+                                    </div>
+                                    <div class="col-md-4 px-md-2">
+                                        @if (Model.Id == 0)
+                                        {
+                                            <a class="btn btn-block btn-outline-secondary disabled">Variants</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-block btn-outline-secondary" asp-action="Variant"
+                                               asp-route-sh_id="@Model.Id">Variants</a>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="form-inline">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ImageURL" class="control-label"></label>
+                                    <input asp-for="ImageURL" class="form-control" />
+                                    <span asp-validation-for="ImageURL" class="text-danger"></span>
+                                </div>
+                                <img width="100%" src="@Model.ImageURL" id="ImageUrlPreview" />
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+@section Scripts{
+    <script defer>
+        $("#ImageURL").on("change", function () {
+            var output = document.getElementById("ImageUrlPreview");
+            output.src = $(this).val();
+        });
+
+    </script>
+}
