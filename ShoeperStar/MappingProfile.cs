@@ -36,9 +36,11 @@ namespace ShoeperStar
             CreateMap<Variant, ShoeVariantVM>()
                 .ForMember(vm => vm.Shoe, opt => opt.MapFrom(v => v.Shoe));
 
+
             CreateMap<Size, SizeVM>();
             CreateMap<Size, ShoeSizeVM>()
                 .ForMember(c => c.Variant, opt => opt.MapFrom(x => x.Variant));
+
 
             CreateMap<Brand, BrandVM>();
             CreateMap<Category, CategoryVM>();
@@ -52,6 +54,21 @@ namespace ShoeperStar
                 .ForMember(s => s.Price, opt => opt.MapFrom(x => Convert.ToDouble(x.Price)));
 
             CreateMap<VariantForCreationVM, Variant>();
+
+            CreateMap<SizeForCreationVM, Size>()
+                .ForMember(s => s.Quantity, opt => opt.MapFrom(x => Convert.ToInt32(x.Quantity)))
+                .ForMember(s => s.Value, opt => opt.MapFrom(x => x.Value))
+                .ForMember(s => s.SKU, opt => opt.MapFrom(x => x.SKU));
+
+
+            //EntityMother To EntityChildForCreationVM
+            CreateMap<Variant, SizeForCreationVM>()
+                .ForMember(s => s.Color, opt => opt.MapFrom(v => v.Color))
+                .ForMember(s => s.ColorHex, opt => opt.MapFrom(v => v.ColorHex))
+                .ForMember(s => s.ShoeModel, opt => opt.MapFrom(v => v.Shoe.Name))
+                .ForMember(s => s.ShoeId, opt => opt.MapFrom(v => v.ShoeId))
+                .ForMember(s => s.VariantId, opt => opt.MapFrom(v => v.Id))
+                .ForAllOtherMembers(opt => opt.Ignore());
 
         }
     }
