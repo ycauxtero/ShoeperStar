@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoeperStar.Data.Contracts;
 using ShoeperStar.Models;
+using ShoeperStar.Models.ViewModels;
 using System.Security.Claims;
 
 namespace ShoeperStar.Controllers
@@ -20,9 +21,14 @@ namespace ShoeperStar.Controllers
             _userManager = userManager;
             _mapper = mapper;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var cartItems = await _repositoryManager.CartItems.GetCartItemsBasedOnActualStocks(userId);
+            var cartItemsVM = _mapper.Map<IEnumerable<CartItemVM>>(cartItems);
+
+            return View(cartItemsVM);
         }
 
         public async Task<IActionResult> AddItemToCart(int shoeSizeId)
