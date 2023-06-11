@@ -46,9 +46,12 @@ namespace ShoeperStar
 
 
 
+
             //EntityForCreationVM To Entity
             CreateMap<ShoeForCreationVM, Shoe>()
                 .ForMember(s => s.Price, opt => opt.MapFrom(x => Convert.ToDouble(x.Price)));
+
+            CreateMap<VariantForCreationVM, Variant>();
 
         }
     }
