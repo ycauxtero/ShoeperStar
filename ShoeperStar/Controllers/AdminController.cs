@@ -211,6 +211,36 @@ namespace ShoeperStar.Controllers
             return RedirectToAction(nameof(Variant), new { sh_id = shoe.Id });
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> UpdateShoe(ShoeForCreationVM shoeVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                var (brands, genders, catergories, shoes) = await GetDropdownSelectList();
+
+                ViewBag.Brands = brands;
+                ViewBag.Genders = genders;
+                ViewBag.Categories = catergories;
+                ViewBag.Shoes = shoes;
+
+                return View("Create", shoeVM);
+            }
+
+            var shoe = _mapper.Map<Shoe>(shoeVM);
+
+            _repositoryManager.Shoes.UpdateShoe(shoe);
+            await _repositoryManager.SaveAsync();
+
+            return RedirectToAction(nameof(Create));
+        }
+
+
+
+
+
+
+
 
 
 
