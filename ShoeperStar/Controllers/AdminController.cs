@@ -28,5 +28,17 @@ namespace ShoeperStar.Controllers
 
             return View("ShoeFilters", dto);
         }
+
+        [Route("[action]")]
+        public async Task<IActionResult> Genders(BaseForNavModelDTO dto)
+        {
+            var items = await _repositoryManager.Genders.GetAllGenders(trackChanges: false);
+
+            ViewBag.Title = "All Gender";
+            ViewBag.Items = items;
+            dto.Category = "Gender";
+
+            return View("ShoeFilters", dto);
+        }
     }
 }
