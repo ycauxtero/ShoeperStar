@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoeperStar.Models;
 using ShoeperStar.Models.ViewModels;
+using ShoeperStar.Models.ViewModels;
 
 namespace ShoeperStar.Controllers
 {
@@ -55,6 +56,46 @@ namespace ShoeperStar.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View(new RegisterVM());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterVM registerVM)
+        {
+            if (!ModelState.IsValid) return View(registerVM);
+
+            var user = await _userManager.FindByEmailAsync(registerVM.EmailAddress);
+            if (user != null)
+            {
+                TempData["Error"] = "This email address is already in use";
+                return View(registerVM);
+            }
+
+            var newUser = new AppUser()
+            {
+                FirstName = registerVM.FirstName,
+                LastName = registerVM.LastName,
+                DeliveryAddress = registerVM.DeliveryAddress,
+                PhoneNumber = registerVM.PhoneNumber,
+                Email = registerVM.EmailAddress,
+                UserName = registerVM.EmailAddress
+            };
+            var newUserResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
+
+            if (!newUserResponse.Succeeded)
+            {
+                TempData["Error"] = newUserResponse.Errors.ElementAt(0).Description;
+                return View(registerVM);
+            }
+
+            await _userManager.AddToRoleAsync(newUser, registerVM.Role);
+
+            return View("RegistrationCompleted");
         }
     }
 }
