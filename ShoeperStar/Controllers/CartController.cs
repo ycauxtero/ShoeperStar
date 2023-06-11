@@ -85,7 +85,22 @@ namespace ShoeperStar.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Checkout()
+        {
+            var userId = GetLoggedInUserId();
+            var cart = await _repositoryManager.CartItems.GetCartItems(userId, includeNavigationFields: true);
 
+            var cartItemsToOrder = cart.Where(x => x.Size.Quantity > 0);
+
+            _repositoryManager.Orders.CreateOrder(cartItemsToOrder, userId);
+            _repositoryManager.CartItems.DeleteCartItems(cart);
+
+            await _repositoryManager.SaveAsync();
+
+            // add SendEmail functionality
+
+            return RedirectToAction("Index", "Orders");
+        }
 
 
 
