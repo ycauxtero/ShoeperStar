@@ -85,6 +85,25 @@ namespace ShoeperStar.Controllers
         }
 
         [Route("[action]")]
+        public async Task<IActionResult> Edit(int id, string q)
+        {
+            switch (q)
+            {
+                case "Brand":
+                    var brand = await _repositoryManager.Brands.GetBrandAsync(id, trackChanges: false);
+                    return RedirectToAction(nameof(Brands), new { Id = brand.Id, Name = brand.Name, Categories = "Brand" });
+                case "Gender":
+                    var gender = await _repositoryManager.Genders.GetGenderAsync(id, trackChanges: false);
+                    return RedirectToAction(nameof(Genders), new { Id = gender.Id, Name = gender.Name, Categories = "Gender" });
+                case "Category":
+                    var category = await _repositoryManager.Categories.GetCatergoryAsync(id, trackChanges: false);
+                    return RedirectToAction(nameof(Categories), new { Id = category.Id, Name = category.Name, Categories = "Category" });
+                default:
+                    return View("Error");
+            }
+        }
+
+        [Route("[action]")]
         [HttpPost]
         public async Task<IActionResult> Update(BaseForNavModelDTO dto)
         {
