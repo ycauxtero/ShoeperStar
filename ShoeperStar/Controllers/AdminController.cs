@@ -329,7 +329,25 @@ namespace ShoeperStar.Controllers
             return View(shoeSizeVM);
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> CreateSize(SizeForCreationVM sizeVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.VariantSizes = _mapper.Map<IEnumerable<ShoeSizeVM>>(
+                                            await _repositoryManager.Sizes.GetSizesByVariantIdAsync(sizeVM.VariantId, trackChanges: false));
+                return View("Size", sizeVM);
+            }
 
+            var size = _mapper.Map<Size>(sizeVM);
+
+            _repositoryManager.Sizes.CreateSize(size);
+
+            await _repositoryManager.SaveAsync();
+
+            return RedirectToAction("Size", new { v_id = sizeVM.VariantId });
+        }
 
 
 
