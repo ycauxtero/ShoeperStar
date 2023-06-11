@@ -59,6 +59,13 @@ namespace ShoeperStar
                 .ForMember(c => c.Model, opt => opt.MapFrom(x => x.Size.Variant.Shoe.Name))
                 .ForMember(c => c.Price, opt => opt.MapFrom(x => x.Size.Variant.Shoe.Price));
 
+            CreateMap<Order, OrderVM>();
+
+            // Note: so as long as the appropriate mapping for the child object properties
+            // are in place, we need not explicitly use a ForMember and ForPath (for nested child properties) during mapping
+            CreateMap<OrderItem, OrderItemVM>();
+
+
 
 
             //EntityForCreationVM To Entity
