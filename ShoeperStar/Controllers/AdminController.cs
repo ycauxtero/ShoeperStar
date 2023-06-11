@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ShoeperStar.Data.Contracts;
 using ShoeperStar.Models;
 using ShoeperStar.Models.DTO;
+using ShoeperStar.Models.ViewModels;
 
 namespace ShoeperStar.Controllers
 {
@@ -166,8 +168,72 @@ namespace ShoeperStar.Controllers
             }
         }
 
+        [Route("Shoe/Create")]
+        [HttpGet]
+        public async Task<IActionResult> Create(int? sh_id)
+        {
+            var (brands, genders, catergories, shoes) = await GetDropdownSelectList();
+
+            ViewBag.Brands = brands;
+            ViewBag.Genders = genders;
+            ViewBag.Categories = catergories;
+            ViewBag.Shoes = shoes;
+
+            if (sh_id == null)
+                return View(new ShoeForCreationVM());
 
 
+            var shoeForCreationVM = _mapper.Map<ShoeForCreationVM>(await _repositoryManager.Shoes.GetShoeAsync((int)sh_id, trackChanges: false));
+
+            return View(shoeForCreationVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(ShoeForCreationVM shoeVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                var (brands, genders, catergories, shoes) = await GetDropdownSelectList();
+
+                ViewBag.Brands = brands;
+                ViewBag.Genders = genders;
+                ViewBag.Categories = catergories;
+                ViewBag.Shoes = shoes;
+
+                return View(shoeVM);
+            }
+
+            var shoe = _mapper.Map<Shoe>(shoeVM);
+
+            _repositoryManager.Shoes.CreateShoe(shoe);
+            await _repositoryManager.SaveAsync();
+
+            return RedirectToAction(nameof(Variant), new { sh_id = shoe.Id });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        private async Task<(SelectList brands, SelectList genders, SelectList catergories, IEnumerable<ShoeVM> shoes)> GetDropdownSelectList()
+        {
+            return (
+                new SelectList(await _repositoryManager.Brands.GetAllBrands(trackChanges: false),
+                                nameof(Shoe.Id), nameof(Shoe.Name), 0),
+                new SelectList(await _repositoryManager.Genders.GetAllGenders(trackChanges: false),
+                                nameof(Gender.Id), nameof(Gender.Name), 0),
+                new SelectList(await _repositoryManager.Categories.GetAllCatergories(trackChanges: false),
+                                nameof(Category.Id), nameof(Category.Name), 0),
+                _mapper.Map<IEnumerable<ShoeVM>>(await _repositoryManager.Shoes.GetAllShoes(trackChanges: false))
+            );
+        }
 
     }
 }
