@@ -41,6 +41,13 @@ namespace ShoeperStar
             CreateMap<Size, ShoeSizeVM>()
                 .ForMember(c => c.Variant, opt => opt.MapFrom(x => x.Variant));
 
+            CreateMap<Size, SizeForCreationVM>()
+                .ForMember(vm => vm.Color, opt => opt.MapFrom(s => s.Variant.Color))
+                .ForMember(vm => vm.ColorHex, opt => opt.MapFrom(s => s.Variant.ColorHex))
+                .ForMember(vm => vm.VariantId, opt => opt.MapFrom(s => s.VariantId))
+                .ForMember(vm => vm.ShoeId, opt => opt.MapFrom(s => s.Variant.ShoeId))
+                .ForMember(vm => vm.ShoeModel, opt => opt.MapFrom(s => s.Variant.Shoe.Name));
+
 
             CreateMap<Brand, BrandVM>();
             CreateMap<Category, CategoryVM>();
