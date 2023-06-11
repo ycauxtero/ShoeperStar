@@ -1,0 +1,34 @@
+﻿@model BaseForNavModelDTO
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 offset-md-3 overflow-auto p-3" 
+            style="height: 80vh; border: 1px solid #ced4da; border-radius: .3rem;">
+            <h4 class="mb-3">@ViewBag.Title</h4>
+            @foreach (BaseForNavigationModels item in ViewBag.Items)
+            {
+                <div class="py-1">
+                    <a class="h4 badge badge-light p-2" 
+                       asp-action="Edit" asp-route-id="@item.Id" asp-route-q="@Model.Category">@item.Name</a>
+                </div>
+            }
+        </div>
+        <div class="col-md-4">
+            <form class="form" method="post">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Category" />
+
+                <input type="text" asp-for="Name" class="form-control mb-2" placeholder="Name" />
+                @if (Model.Id == 0)
+                {
+                    <button type="submit" asp-action="Add" class="btn btn-success">Add</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-success text-right" asp-action="Update">Update</button>
+                    <button type="submit" class="btn btn-danger text-right"  asp-action="Delete">Delete</button>
+                }
+            </form>
+        </div>
+    </div>
+</div>
