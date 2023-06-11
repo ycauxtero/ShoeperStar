@@ -40,5 +40,17 @@ namespace ShoeperStar.Controllers
 
             return View("ShoeFilters", dto);
         }
+
+        [Route("[action]")]
+        public async Task<IActionResult> Categories(BaseForNavModelDTO dto)
+        {
+            var items = await _repositoryManager.Categories.GetAllCatergories(trackChanges: false);
+
+            ViewBag.Title = "All Category";
+            ViewBag.Items = items;
+            dto.Category = "Category";
+
+            return View("ShoeFilters", dto);
+        }
     }
 }
