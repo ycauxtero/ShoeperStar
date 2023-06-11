@@ -1,0 +1,62 @@
+﻿@model IEnumerable<CartItemVM>
+@{
+    var total = Model.Where(x => x.Size.Quantity > 0).Select(x => x.Qty * x.Price).Sum();
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        @if (total > 0)
+        {
+            <div class="text-center">
+                <h2>Your shopping cart summary</h2>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Qty</th>
+                        <th>Model</th>
+                        <th>Variant</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @await Html.PartialAsync("_CartItems", Model)
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td><b>Total:</b></td>
+                        <td>
+                            @total.ToString("c")
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="text-right">
+                <a class="btn btn-outline-success" asp-action="Checkout">
+                    Checkout
+                </a>
+                <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Filter">
+                    Add more items
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="text-center">
+                <h2>Your cart is empty!</h2>
+                <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Filter">
+                    Continue Shopping
+                </a>
+            </div>
+
+        }
+
+
+    </div>
+</div>

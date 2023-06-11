@@ -1,0 +1,62 @@
+﻿@model IEnumerable<CartItemVM>
+
+@foreach (var item in Model)
+{
+    var subTotal = item.Price * item.Qty;
+
+    if (item.Size.Quantity == 0)
+    {
+        <tr class="text-secondary">
+            <td class="align-middle"><del>@item.Qty</del></td>
+            <td class="align-middle">
+                <del>@item.Model</del>
+            </td>
+            <td>
+                <del>
+                    <span class="badge"
+                          style="background-color: @item.ColorHex;
+                                                color: @item.ColorHex;
+                                                border: 1px solid gray">
+                        --
+                    </span><span>@item.Size.Value</span>
+                </del>
+            </td>
+            <td class="align-middle"><del>@item.Price.ToString("c")</del></td>
+            <td class="align-middle"><del>@subTotal.ToString("c")</del></td>
+            <td class="align-middle">
+                <a class="text-danger" asp-action="RemoveItemFromCart" asp-route-id="@item.Id">
+                    <i class="bi bi-trash-fill"></i>
+                </a>
+            </td>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <td class="align-middle">@item.Qty</td>
+            <td class="align-middle">@item.Model</td>
+            <td>
+                <span class="badge"
+                      style="background-color: @item.ColorHex;
+                                                color: @item.ColorHex;
+                                                border: 1px solid gray">
+                    --
+                </span><span>@item.Size.Value</span>
+            </td>
+            <td class="align-middle">@item.Price.ToString("c")</td>
+            <td class="align-middle">@subTotal.ToString("c")</td>
+            <td class="align-middle">
+                <a class="text-danger" asp-action="DecrementItemQty" asp-route-shoeSizeId="@item.Size.Id">
+                    <i class="bi bi-cart-dash"></i>
+                </a>
+                @if (item.Size.Quantity > item.Qty)
+                {
+                    <span>|</span>
+                    <a class="text-success" asp-action="IncrementItemQty" asp-route-shoeSizeId="@item.Size.Id">
+                        <i class="bi bi-cart-plus"></i>
+                    </a>
+                }
+            </td>
+        </tr>
+    }
+}
