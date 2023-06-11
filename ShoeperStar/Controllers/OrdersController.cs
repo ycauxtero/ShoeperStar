@@ -1,6 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using ShoeperStar.Data.Contracts;
+using ShoeperStar.Data.References;
+using ShoeperStar.Models;
+using ShoeperStar.Models.ViewModels;
+using System.Drawing.Printing;
+using System.Security.Claims;
+using X.PagedList;
 
 namespace ShoeperStar.Controllers
 {
@@ -15,9 +22,72 @@ namespace ShoeperStar.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? page = 1, int? pageSize = null)
         {
-            return View();
+            if (page != null && page < 1) page = 1;
+
+            var orders = await GetOrders();
+            var ordersVM = _mapper.Map<IEnumerable<OrderVM>>(orders);
+
+            return View(ordersVM.ToPagedList((int)page, GetPageSize(pageSize)));
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private async Task<IEnumerable<Order>> GetOrders()
+        {
+            IEnumerable<Order> orders = null;
+
+            if (User.IsInRole(UserRoles.Admin))
+            {
+                orders = await _repositoryManager.Orders.GetAllOrdersAsync(trackChanges: false);
+                return await orders.Where(x => !x.IsCancelled)
+                                    .OrderByDescending(x => !x.IsPaid)
+                                    .ThenByDescending(x => !x.IsShipped)
+                                    .ThenBy(x => x.OrderDate)
+                                    .ToListAsync();
+            }
+
+            var userId = GetLoggedInUserId();
+            orders = await _repositoryManager.Orders.GetAllOrdersAsync(userId, trackChanges: false);
+            return await orders.OrderByDescending(x => x.OrderDate).ToListAsync();
+        }
+
+        private string GetLoggedInUserId()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+
+        private int GetPageSize(int? pageSize)
+        {
+            if (pageSize != null)
+            {
+                HttpContext.Response.Cookies.Append("page-size", pageSize.ToString());
+                return Convert.ToInt32(pageSize);
+            }
+
+            var pageSizeCookie = HttpContext.Request.Cookies["page-size"];
+            if (pageSizeCookie == null)
+            {
+                pageSize = 1;
+                HttpContext.Response.Cookies.Append("page-size", pageSize.ToString());
+                return Convert.ToInt32(pageSize);
+            }
+
+            return Convert.ToInt32(pageSizeCookie);
         }
     }
 }
