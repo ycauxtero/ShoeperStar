@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ShoeperStar.Data.Contracts;
@@ -11,6 +12,7 @@ using X.PagedList;
 
 namespace ShoeperStar.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly IRepositoryManager _repositoryManager;
@@ -32,7 +34,19 @@ namespace ShoeperStar.Controllers
             return View(ordersVM.ToPagedList((int)page, GetPageSize(pageSize)));
         }
 
+        public async Task<IActionResult> ReceiveOrder(Guid id)
+        {
+            var order = await _repositoryManager.Orders.GetOrderAsync(id, trackChanges: false);
 
+            if (order == null) return RedirectToAction("Index");
+
+            order.OrderRecieved = true;
+
+            _repositoryManager.Orders.UpdateOrder(order);
+            await _repositoryManager.SaveAsync();
+
+            return RedirectToAction("Index");
+        }
 
 
 
