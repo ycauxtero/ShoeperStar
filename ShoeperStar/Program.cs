@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using ShoeperStar;
+using ShoeperStar.Data.Contracts;
+using ShoeperStar.Data.Repository;
 using ShoeperStar.Extensions;
 using ShoeperStar.Models;
 
@@ -10,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureSql(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
-
+builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.ConfigureHashIdService(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
