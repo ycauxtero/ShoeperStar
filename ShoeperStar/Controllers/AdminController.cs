@@ -303,6 +303,36 @@ namespace ShoeperStar.Controllers
 
 
 
+        [Route("[action]/{v_Id}")]
+        [HttpGet]
+        public async Task<IActionResult> Size(int v_id, int? s_id)
+        {
+            var variant = await _repositoryManager.Variants.GetVariantAsync(v_id, trackChanges: false, includeNavigationFields: true);
+
+            if (variant is null)
+            {
+                return View("NotFound");
+            }
+
+            ViewBag.VariantSizes = _mapper.Map<IEnumerable<SizeVM>>(
+                                            await _repositoryManager.Sizes.GetSizesByVariantIdAsync(v_id, trackChanges: false));
+
+            if (s_id == null)
+            {
+                var sizeVM = _mapper.Map<SizeForCreationVM>(variant);
+                return View(sizeVM);
+            }
+
+            var shoeSize = await _repositoryManager.Sizes.GetSizeAsync((int)s_id, trackChanges: false, includeNavigationFields: true);
+            var shoeSizeVM = _mapper.Map<SizeForCreationVM>(shoeSize);
+
+            return View(shoeSizeVM);
+        }
+
+
+
+
+
 
 
 
