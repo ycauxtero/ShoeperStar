@@ -83,5 +83,35 @@ namespace ShoeperStar.Controllers
                     return View("Error");
             }
         }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> Update(BaseForNavModelDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("ShoeFilters", dto);
+            }
+
+            switch (dto.Category)
+            {
+                case "Brand":
+                    _repositoryManager.Brands.UpdateBrand(new Brand { Id = dto.Id, Name = dto.Name });
+                    await _repositoryManager.SaveAsync();
+                    return RedirectToAction(nameof(Brands));
+
+                case "Gender":
+                    _repositoryManager.Genders.UpdateGender(new Gender { Id = dto.Id, Name = dto.Name });
+                    await _repositoryManager.SaveAsync();
+                    return RedirectToAction(nameof(Genders));
+
+                case "Category":
+                    _repositoryManager.Categories.UpdateCatergory(new Category { Id = dto.Id, Name = dto.Name });
+                    await _repositoryManager.SaveAsync();
+                    return RedirectToAction(nameof(Categories));
+                default:
+                    return View("Error");
+            }
+        }
     }
 }
