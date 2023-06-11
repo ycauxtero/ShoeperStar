@@ -16,7 +16,7 @@ namespace ShoeperStar.Models.ViewModels
         public string ColorHex { get; set; }
 
         public int ShoeId { get; set; }
-        public string ShoeModel { get; set; }
+        public string? ShoeModel { get; set; }
 
     }
 }
