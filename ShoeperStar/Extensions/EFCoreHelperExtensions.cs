@@ -29,5 +29,12 @@ namespace ShoeperStar.Extensions
                     .ThenInclude(x => x.Shoe);
         }
 
+        public static IQueryable<CartItem> IncludeCartItemNavigationFields(this IQueryable<CartItem> cartItems)
+        {
+            return cartItems
+                    .Include(x => x.Size)
+                    .ThenInclude(x => x.Variant)
+                    .ThenInclude(x => x.Shoe);
+        }
     }
 }
