@@ -4,7 +4,6 @@ using ShoeperStar.Data.Contracts;
 using ShoeperStar.Data.Services;
 using ShoeperStar.Models;
 using ShoeperStar.Models.ViewModels;
-using System.Diagnostics;
 using X.PagedList;
 
 namespace ShoeperStar.Controllers
