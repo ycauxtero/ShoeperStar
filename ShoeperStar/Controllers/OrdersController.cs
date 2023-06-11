@@ -78,7 +78,17 @@ namespace ShoeperStar.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<IActionResult> Expired()
+        {
+            var orders = await _repositoryManager.Orders.GetAllOrdersAsync(trackChanges: false);
+            var expiredOrders = orders.Where(x => x.PaymentExpiry < DateTime.Now &&
+                                                !x.IsCancelled &&
+                                                !x.IsPaid)
+                                      .ToList();
 
+            return View(expiredOrders);
+        }
 
 
 
