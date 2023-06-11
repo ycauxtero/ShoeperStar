@@ -1,0 +1,106 @@
+﻿@model VariantForCreationVM
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <form method="post" asp-action="CreateVariant">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-3 overflow-auto p-3"
+                             style="height: 80vh; border: 1px solid #ced4da; border-radius: .3rem;">
+                            <h4 class="mb-3">All Variants</h4>
+                            @foreach (VariantVM item in ViewBag.ShoeVariants)
+                            {
+                                <div class="py-1">
+                                    <a class="h4 badge badge-light p-2"
+                                       asp-action="Variant" asp-route-sh_id="@Model.ShoeId" asp-route-v_id="@item.Id">
+                                        <span class="badge"
+                                              style="background-color: @item.ColorHex;
+                                                color: @item.ColorHex;
+                                                border: 1px solid gray">
+                                            --
+                                        </span> <span>@item.Color</span>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="col-md-9">
+                            <input type="hidden" asp-for="ShoeId" />
+                            <input type="hidden" asp-for="Id" />
+
+                            <h3 class="mt-2 mb-4">@Model.ShoeModel</h3>
+
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <label asp-for="Color" class="control-label"></label>
+                                        <input readonly asp-for="Color" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <label asp-for="ColorHex" class="control-label"></label>
+                                        <input readonly asp-for="ColorHex" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="colorPicker">Select Color:</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    <input class="w-75" type="color" id="colorPicker">
+                                </div>
+                            </div>
+
+                            <div class="row mt-4 px-2">
+                                <div class="col-md-4 px-md-2">
+                                    @if (Model.Id == 0)
+                                    {
+                                        <input type="submit" class="btn btn-block btn-outline-success" asp-action="CreateVariant" value="Create" />
+                                    }
+                                    else
+                                    {
+                                        <input type="submit" class="btn btn-block btn-outline-primary" value="Update" asp-action="UpdateVariant" />
+                                    }
+                                </div>
+                                <div class="col-md-4 px-md-2">
+                                    <a class="btn btn-block btn-outline-danger"
+                                       asp-action="Variant" asp-route-sh_id="@Model.ShoeId">Clear</a>
+                                </div>
+                                <div class="col-md-4 px-md-2">
+                                    @if (Model.Id == 0)
+                                    {
+                                        <a class="btn btn-block btn-outline-secondary" asp-action="Create"
+                                           asp-route-sh_id="@Model.ShoeId">Back</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-block btn-outline-secondary" asp-action="Size" asp-route-v_id="@Model.Id">Sizes</a>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/colorPicker.js"></script>
+}
