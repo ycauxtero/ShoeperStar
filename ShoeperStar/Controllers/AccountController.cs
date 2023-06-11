@@ -97,5 +97,12 @@ namespace ShoeperStar.Controllers
 
             return View("RegistrationCompleted");
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
