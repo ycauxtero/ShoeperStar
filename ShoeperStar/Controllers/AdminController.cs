@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShoeperStar.Data.Contracts;
@@ -8,6 +9,7 @@ using ShoeperStar.Models.ViewModels;
 
 namespace ShoeperStar.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     public class AdminController : Controller
     {
