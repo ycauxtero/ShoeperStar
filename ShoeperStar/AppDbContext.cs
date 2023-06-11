@@ -23,5 +23,7 @@ namespace ShoeperStar
         public DbSet<Variant> Variants { get; set; }
 
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }
