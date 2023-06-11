@@ -1,0 +1,108 @@
+﻿@model SizeForCreationVM
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <form method="post" asp-action="CreateSize">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-3 overflow-auto p-3"
+                             style="height: 80vh; border: 1px solid #ced4da; border-radius: .3rem;">
+                            <h4 class="mb-3">All Sizes</h4>
+                            @foreach (SizeVM size in ViewBag.VariantSizes)
+                            {
+                                <div class="py-1">
+                                    <a class="h4 badge badge-light p-2"
+                                       asp-action="Size" asp-route-s_id="@size.Id" asp-route-v_id="@Model.VariantId">@size.Value</a>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="col-md-9">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="VariantId" />
+
+                            <div class="row">
+                                <div class="col">
+                                    <h3 class="mt-2 mb-4 text-center">
+                                        @Model.ShoeModel -
+                                        <span class="badge h4"
+                                              style="background-color: @Model.ColorHex;
+                                                color: @Model.ColorHex;
+                                                border: 1px solid gray">
+                                            --
+                                        </span> <span class="text-secondary">@Model.Color</span>
+
+                                    </h3>
+                                </div>
+
+
+                                <div class="col-md-10 offset-md-1">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label asp-for="Value" class="control-label"></label>
+                                                <input asp-for="Value" class="form-control" />
+                                                <span asp-validation-for="Value" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label asp-for="Quantity" class="control-label"></label>
+                                                <input asp-for="Quantity" class="form-control" />
+                                                <span asp-validation-for="Quantity" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label asp-for="SKU" class="control-label"></label>
+                                                <input asp-for="SKU" class="form-control" />
+                                                <span asp-validation-for="SKU" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-4">
+                                        <div class="col-md-4 px-md-2">
+                                            @if (Model.Id == 0)
+                                            {
+                                                <input type="submit" class="btn btn-block btn-outline-success" value="Create" asp-action="CreateSize" />
+                                            }
+                                            else
+                                            {
+                                                <input type="submit" class="btn btn-block btn-outline-primary" value="Update" asp-action="UpdateSize" />
+                                            }
+                                        </div>
+                                        <div class="col-md-4 px-md-2">
+                                            <a class="btn btn-block btn-outline-danger"
+                                               asp-action="Size" asp-route-v_id="@Model.VariantId">Clear</a>
+                                        </div>
+                                        <div class="col-md-4 px-md-2">
+                                            <a class="btn btn-block btn-outline-secondary" asp-action="Variant"
+                                               asp-route-sh_id="@Model.ShoeId">Back</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
