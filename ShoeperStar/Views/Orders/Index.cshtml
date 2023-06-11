@@ -1,0 +1,120 @@
+﻿@model IPagedList<OrderVM>
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="container mb-2">
+                <div class="row">
+                    @* NOTE: filterOption is a custom TagHelper (Views/Shared/Tag Helpers)  *@
+                    <div class="col-sm-3 mb-1">
+                        <a name="unpaid-orders" filterOption asp-action="Filter" asp-route-option="unpaid-orders">Unpaid Orders</a>
+                    </div>
+                    <div class="col-sm-3 mb-1">
+                        <a name="orders-for-shipping" filterOption
+                           asp-action="Filter" asp-route-option="orders-for-shipping">Orders For Shipping</a>
+                    </div>
+                    <div class="col-sm-3 mb-1">
+                        <a name="shipped-orders" filterOption
+                           asp-action="Filter" asp-route-option="shipped-orders">Shipped Orders</a>
+                    </div>
+                    <div class="col-sm-3 mb-1">
+                        <a name="received-orders" filterOption
+                           asp-action="Filter" asp-route-option="received-orders">Received Orders</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @foreach (var order in Model)
+        {
+
+            <div class="row pb-2">
+                <div class="col-sm-6">
+                    <span class="font-weight-bold" style="position: relative; top: 25%;">Date Ordered: </span>
+                    <span style="position: relative; top: 25%;">@order.OrderDate.ToString("MMM dd, h:mm tt")</span>
+                </div>
+                <div class="col-sm-6">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        await Html.RenderPartialAsync("_AdminOrders", order);
+                    }
+                    else
+                    {
+                        await Html.RenderPartialAsync("_CustomerOrders", order);
+                    }
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Variant</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in order.OrderItems)
+                    {
+                        var shoe = item.Size.Variant.Shoe;
+                        <tr>
+                            <td class="align-middle">@shoe.BrandName @shoe.Name</td>
+                            <td>
+                                <span class="badge"
+                                      style="background-color: @item.Size.Variant.ColorHex;
+                                                color: @item.Size.Variant.ColorHex;
+                                                border: 1px solid gray">
+                                    --
+                                </span> <span>@item.Size.Value</span>
+                            </td>
+                            <td class="align-middle">@shoe.Price.ToString("c")</td>
+                            <td class="align-middle">@item.Quantity</td>
+                            @{
+                                var subTotal = shoe.Price * item.Quantity;
+                            }
+                            <td class="align-middle">@subTotal.ToString("c")</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td><b>Total:</b></td>
+                        @{
+                            var total = order.OrderItems.Select(x => x.Quantity * x.Size.Variant.Shoe.Price).Sum();
+                        }
+                        <td>
+                            @total.ToString("c")
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        }
+
+    </div>
+
+</div>
+
+<div style="position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%);">
+    <div class="row">
+        <nav class="mx-auto">
+            @Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), new PagedListRenderOptions()
+            {
+            ActiveLiElementClass = "active",
+            PageClasses = new[] { "page-link" },
+            LiElementClasses = new[] { "page-item" },
+            UlElementClasses = new[] { "pagination", "justify-content-center", "mt-3" },
+            LinkToNextPageFormat = ">",
+            LinkToPreviousPageFormat = "<",
+            MaximumPageNumbersToDisplay = 2,
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always
+            })
+        </nav>
+    </div>
+</div>

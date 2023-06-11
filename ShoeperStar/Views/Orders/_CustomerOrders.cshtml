@@ -1,0 +1,32 @@
+﻿@model OrderVM
+
+<div class="text-right">
+    @if (!Model.IsPaid)
+    {
+        <div class="badge badge-danger">AWAITING ORDER PAYMENT</div>
+    }
+    else
+    {
+        @if (Model.IsShipped)
+        {
+            @if (Model.OrderRecieved)
+            {
+                <div class="badge badge-success">ORDER RECEIVED</div>
+            }
+            else
+            {
+                <div>
+                    <span class="badge badge-secondary mr-1">ORDER SHIPPED</span>
+                    <a class="h4 badge badge-danger p-2 m-0"
+                       asp-action="ReceiveOrder" asp-route-id="@Model.Id">RECEIVE ORDER</a>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="badge badge-info">ORDER IS BEING PROCESSED FOR SHIPMENT</div>
+        }
+    }
+</div>
+
+

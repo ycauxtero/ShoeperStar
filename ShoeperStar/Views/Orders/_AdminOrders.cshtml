@@ -1,0 +1,25 @@
+﻿@model OrderVM
+
+<div class="text-right">
+    @if (!Model.IsPaid)
+    {
+        <a class="h4 badge badge-danger p-2 m-0"
+           asp-action="OrderPaid" asp-route-id="@Model.Id">RECEIVE PAYMENT</a>
+    }
+    else
+    {
+        @if (Model.IsShipped)
+        {
+            <div class="badge badge-info">ORDER SHIPPED</div>
+        }
+        else
+        {
+            <a class="h4 badge badge-danger p-2 m-0"
+               asp-action="ShipOutOrder" asp-route-id="@Model.Id">SHIP ORDER</a>
+        }
+    }
+</div>
+
+
+
+
