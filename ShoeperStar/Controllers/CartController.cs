@@ -69,7 +69,21 @@ namespace ShoeperStar.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> DecrementItemQty(int shoeSizeId)
+        {
+            var userId = GetLoggedInUserId();
 
+            var cartItem = new CartItem
+            {
+                Size = await _repositoryManager.Sizes.GetSizeAsync(shoeSizeId, trackChanges: true),
+                UserId = userId
+            };
+
+            await _repositoryManager.CartItems.DeleteCartItem(cartItem);
+            await _repositoryManager.SaveAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
 
 
 
