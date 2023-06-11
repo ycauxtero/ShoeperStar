@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoeperStar.Data.Contracts;
@@ -8,6 +9,7 @@ using System.Security.Claims;
 
 namespace ShoeperStar.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         private readonly IRepositoryManager _repositoryManager;
