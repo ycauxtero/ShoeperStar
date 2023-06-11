@@ -21,5 +21,7 @@ namespace ShoeperStar
         public DbSet<Gender> Genders { get; set; }
         public DbSet<Size> Sizes { get; set; }
         public DbSet<Variant> Variants { get; set; }
+
+        public DbSet<CartItem> CartItems { get; set; }
     }
 }
