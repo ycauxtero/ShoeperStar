@@ -53,6 +53,11 @@ namespace ShoeperStar
             CreateMap<Category, CategoryVM>();
             CreateMap<Gender, GenderVM>();
 
+            CreateMap<CartItem, CartItemVM>()
+                .ForMember(c => c.Size, opt => opt.MapFrom(x => x.Size))
+                .ForMember(c => c.ColorHex, opt => opt.MapFrom(x => x.Size.Variant.ColorHex))
+                .ForMember(c => c.Model, opt => opt.MapFrom(x => x.Size.Variant.Shoe.Name))
+                .ForMember(c => c.Price, opt => opt.MapFrom(x => x.Size.Variant.Shoe.Price));
 
 
 
