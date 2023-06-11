@@ -59,7 +59,15 @@ namespace ShoeperStar.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> IncrementItemQty(int shoeSizeId)
+        {
+            var userId = GetLoggedInUserId();
+            await _repositoryManager.CartItems.AddCartItem(shoeSizeId, userId);
 
+            await _repositoryManager.SaveAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
 
 
 
