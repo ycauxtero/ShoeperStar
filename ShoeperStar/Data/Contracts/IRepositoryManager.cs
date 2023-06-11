@@ -8,6 +8,8 @@
         IShoeRepository Shoes { get; }
         IVariantRepository Variants { get; }
         ISizeRepository Sizes { get; }
+        ICartRepository CartItems { get; }
+
         Task SaveAsync();
     }
 }
