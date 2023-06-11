@@ -90,6 +90,23 @@ namespace ShoeperStar.Controllers
             return View(expiredOrders);
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<IActionResult> CancelExpiredOrders()
+        {
+            var orders = await _repositoryManager.Orders.GetAllOrdersAsync(trackChanges: false);
+            var expiredOrders = orders.Where(x => x.PaymentExpiry < DateTime.Now &&
+                                                    !x.IsCancelled &&
+                                                    !x.IsPaid)
+                                      .ToList();
+
+            await CancelExpiredOrdersAndReturnStocksToInventory(expiredOrders);
+
+            return RedirectToAction(nameof(Expired));
+        }
+
+
+
+
 
 
 
@@ -139,5 +156,18 @@ namespace ShoeperStar.Controllers
 
             return Convert.ToInt32(pageSizeCookie);
         }
+
+        private async Task CancelExpiredOrdersAndReturnStocksToInventory(IEnumerable<Order> expiredOrders)
+        {
+            var shoeSizesForStockUpdate = await GetShoeSizesForStocksUpdate(expiredOrders);
+            var ordersForCancellation = GetOrdersForCancellationWithoutNavigationFields(expiredOrders);
+
+            _repositoryManager.Sizes.UpdateSizes(shoeSizesForStockUpdate);
+            _repositoryManager.Orders.UpdateOrders(ordersForCancellation);
+
+            await _repositoryManager.SaveAsync();
+        }
+
+
     }
 }
