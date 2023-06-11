@@ -26,6 +26,9 @@ namespace ShoeperStar
                 .ForMember(s => s.Catergory, opt => opt.MapFrom(x => x.Catergory))
                 .ForAllOtherMembers(opt => opt.Ignore());
 
+            CreateMap<Shoe, ShoeForCreationVM>();
+
+
             CreateMap<Variant, ShoeVariantVM>()
                 .ForMember(vm => vm.Shoe, opt => opt.MapFrom(v => v.Shoe));
 
