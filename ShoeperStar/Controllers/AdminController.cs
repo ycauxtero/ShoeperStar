@@ -237,7 +237,30 @@ namespace ShoeperStar.Controllers
 
 
 
+        [Route("Shoe/Variant")]
+        [HttpGet]
+        public async Task<IActionResult> Variant(int sh_id, int? v_id)
+        {
+            var shoe = await _repositoryManager.Shoes.GetShoeAsync(sh_id, trackChanges: false);
 
+            ViewBag.ShoeVariants = _mapper.Map<IEnumerable<VariantVM>>(
+                                        await _repositoryManager.Variants.GetVariantsByShoeIdAsync(sh_id, trackChanges: false));
+
+            if (v_id == null)
+            {
+                var variantForCreationVM = new VariantForCreationVM();
+                variantForCreationVM.ShoeId = shoe.Id;
+                variantForCreationVM.ShoeModel = shoe.Name;
+
+                return View(variantForCreationVM);
+            }
+
+            var variantVM = _mapper.Map<VariantForCreationVM>(
+                                    await _repositoryManager.Variants
+                                            .GetVariantAsync((int)v_id, trackChanges: false, includeNavigationFields: true));
+
+            return View(variantVM);
+        }
 
 
 
