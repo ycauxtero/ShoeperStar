@@ -262,7 +262,25 @@ namespace ShoeperStar.Controllers
             return View(variantVM);
         }
 
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> CreateVariant(VariantForCreationVM variantVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ShoeVariants = _mapper.Map<IEnumerable<VariantVM>>(
+                                        await _repositoryManager.Variants.GetVariantsByShoeIdAsync(variantVM.ShoeId, trackChanges: false));
+                ModelState.AddModelError("", "Please select a color variant");
+                return View("Variant", variantVM);
+            }
 
+            var variant = _mapper.Map<Variant>(variantVM);
+            _repositoryManager.Variants.CreateVariant(variant);
+
+            await _repositoryManager.SaveAsync();
+
+            return RedirectToAction("Variant", new { sh_id = variantVM.ShoeId });
+        }
 
 
 
