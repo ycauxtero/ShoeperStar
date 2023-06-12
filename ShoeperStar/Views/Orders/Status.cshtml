@@ -1,0 +1,9 @@
+﻿@model OrderVM
+
+<div class="container">
+    @{
+        await Html.RenderPartialAsync("_OrderDetails", Model);
+    }
+</div>
+
+
