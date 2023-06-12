@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace EmailService
 {
-    internal class EmailSender : IEmailSender
+    public class EmailSender : IEmailSender
     {
         private readonly EmailConfiguration _emailConfig;
 
-        internal EmailSender(EmailConfiguration emailConfig)
+        public EmailSender(EmailConfiguration emailConfig)
         {
             _emailConfig = emailConfig;
         }
