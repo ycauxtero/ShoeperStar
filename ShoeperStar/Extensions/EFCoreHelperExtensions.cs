@@ -45,7 +45,7 @@ namespace ShoeperStar.Extensions
                     .ThenInclude(oi => oi.Size)
                     .ThenInclude(s => s.Variant)
                     .ThenInclude(v => v.Shoe)
-                    .ThenInclude(s => s.Brand)
+                    .ThenInclude(s => s.Brand);
         }
     }
 }
