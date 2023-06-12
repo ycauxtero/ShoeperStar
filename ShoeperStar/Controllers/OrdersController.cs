@@ -34,6 +34,14 @@ namespace ShoeperStar.Controllers
             return View(ordersVM.ToPagedList((int)page, GetPageSize(pageSize)));
         }
 
+        public async Task<IActionResult> Status(Guid id)
+        {
+            var order = await _repositoryManager.Orders.GetOrderAsync(id, trackChanges: false);
+            var orderVM = _mapper.Map<OrderVM>(order);
+
+            return View(orderVM);
+        }
+
         public async Task<IActionResult> ReceiveOrder(Guid id)
         {
             var order = await _repositoryManager.Orders.GetOrderAsync(id, trackChanges: false);
