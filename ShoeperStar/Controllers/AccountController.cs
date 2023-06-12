@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoeperStar.Models;
 using ShoeperStar.Models.ViewModels;
-using ShoeperStar.Models.ViewModels;
 
 namespace ShoeperStar.Controllers
 {
@@ -11,13 +10,11 @@ namespace ShoeperStar.Controllers
     {
         private UserManager<AppUser> _userManager;
         private SignInManager<AppUser> _signInManager;
-        private AppDbContext _dbContext;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, AppDbContext dbContext)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _dbContext = dbContext;
         }
 
         [HttpGet]
