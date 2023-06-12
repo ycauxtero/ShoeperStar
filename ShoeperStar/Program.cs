@@ -27,6 +27,8 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 });
 
+builder.Services.ConfigureEmailService(builder.Configuration);
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

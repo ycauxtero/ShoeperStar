@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EmailService;
+using Microsoft.EntityFrameworkCore;
 using ShoeperStar.Data.Contracts;
 using ShoeperStar.Data.Repository;
 using ShoeperStar.Data.Services;
@@ -21,6 +22,15 @@ namespace ShoeperStar.Extensions
         {
             var salt = Configuration.GetValue<string>("HashId:Salt");
             services.AddSingleton(typeof(HashIdService), new HashIdService(salt));
+        }
+
+        public static void ConfigureEmailService(this IServiceCollection services, IConfiguration Configuration)
+        {
+            var emailConfig = Configuration
+                .GetSection("EmailConfiguration")
+                .Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
+            services.AddScoped<IEmailSender, EmailSender>();
         }
     }
 }
