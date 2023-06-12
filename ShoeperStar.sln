@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoeperStar", "ShoeperStar\ShoeperStar.csproj", "{A875E447-99D5-4D1F-A949-0635A849F8DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoeperStar", "ShoeperStar\ShoeperStar.csproj", "{A875E447-99D5-4D1F-A949-0635A849F8DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailService", "EmailService\EmailService.csproj", "{0B306749-8E91-4CBA-84EC-C642266B5E64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A875E447-99D5-4D1F-A949-0635A849F8DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A875E447-99D5-4D1F-A949-0635A849F8DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A875E447-99D5-4D1F-A949-0635A849F8DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B306749-8E91-4CBA-84EC-C642266B5E64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B306749-8E91-4CBA-84EC-C642266B5E64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B306749-8E91-4CBA-84EC-C642266B5E64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B306749-8E91-4CBA-84EC-C642266B5E64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
