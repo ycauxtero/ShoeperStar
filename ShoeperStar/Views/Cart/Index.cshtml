@@ -38,7 +38,7 @@
             </table>
 
             <div class="text-right">
-                <a class="btn btn-outline-success" asp-action="Checkout">
+                <a class="btn btn-outline-success" asp-action="Checkout" asp-route-total="@total.ToString("0.00")">
                     Checkout
                 </a>
                 <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Filter">
