@@ -29,11 +29,33 @@
 
         @foreach (var order in Model)
         {
-
+            @if (User.IsInRole("Admin"))
+            {
+            <div class="row pb-1">
+                <div class="col-sm-4">
+                    <span class="font-weight-bold">Customer Name:</span>
+                    <span>@order.User.FirstName @order.User.LastName</span>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <p class="m-0">
+                        <span class="font-weight-bold">Delivery Address:</span>
+                        <span>@order.User.DeliveryAddress</span>
+                    </p>
+                        
+                </div>
+                <div class="col-sm-4 text-right">
+                    <p class="m-0">
+                        <span class="font-weight-bold">Contact No.:</span>
+                        <span>@order.User.PhoneNumber</span>
+                    </p>
+                        
+                </div>
+            </div>
+            }
+            
             <div class="row pb-2">
                 <div class="col-sm-6">
-                    <span class="font-weight-bold" style="position: relative; top: 25%;">Date Ordered: </span>
-                    <span style="position: relative; top: 25%;">@order.OrderDate.ToString("MMM dd, h:mm tt")</span>
+                    <span class="badge badge-secondary">@order.OrderDate.ToString("yyyy MMM dd, h:mm tt")</span>
                 </div>
                 <div class="col-sm-6">
                     @if (User.IsInRole("Admin"))
