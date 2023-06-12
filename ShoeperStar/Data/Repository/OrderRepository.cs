@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoeperStar.Data.Contracts;
+using ShoeperStar.Extensions;
 using ShoeperStar.Models;
 
 namespace ShoeperStar.Data.Repository
@@ -15,7 +16,7 @@ namespace ShoeperStar.Data.Repository
             Create(order);
         }
 
-        public void CreateOrder(IEnumerable<CartItem> cartItems, string userId)
+        public Order CreateOrder(IEnumerable<CartItem> cartItems, string userId)
         {
             var orderItems = new List<OrderItem>();
             foreach (var cartItem in cartItems)
@@ -32,10 +33,13 @@ namespace ShoeperStar.Data.Repository
             {
                 UserId = userId,
                 OrderDate = DateTime.Now,
+                PaymentExpiry = DateTime.Now.Date.AddDays(1),
                 OrderItems = orderItems,
             };
 
             Create(order);
+
+            return order;
         }
 
         public void DeleteOrder(Order order)
@@ -48,11 +52,7 @@ namespace ShoeperStar.Data.Repository
             if (includeNavigationFields)
             {
                 return await FindAll(trackChanges: false)
-                            .Include(o => o.OrderItems)
-                            .ThenInclude(oi => oi.Size)
-                            .ThenInclude(s => s.Variant)
-                            .ThenInclude(v => v.Shoe)
-                            .ThenInclude(s => s.Brand)
+                            .IncludeOrderNavigationFields()
                             .ToListAsync();
             }
 
@@ -64,11 +64,7 @@ namespace ShoeperStar.Data.Repository
             if (includeNavigationFields)
             {
                 return await FindByCondition(x => x.UserId == userId, trackChanges: false)
-                                            .Include(o => o.OrderItems)
-                                            .ThenInclude(oi => oi.Size)
-                                            .ThenInclude(s => s.Variant)
-                                            .ThenInclude(v => v.Shoe)
-                                            .ThenInclude(s => s.Brand)
+                                            .IncludeOrderNavigationFields()
                                             .ToListAsync();
             }
 
@@ -80,8 +76,7 @@ namespace ShoeperStar.Data.Repository
             if (includeNavigationFields)
             {
                 return await FindByCondition(x => x.Id == id, trackChanges: false)
-                                            .Include(x => x.OrderItems)
-                                            .ThenInclude(x => x.Size)
+                                            .IncludeOrderNavigationFields()
                                             .SingleOrDefaultAsync();
             }
 
