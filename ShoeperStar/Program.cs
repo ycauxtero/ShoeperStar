@@ -8,7 +8,7 @@ using ShoeperStar.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.ConfigureSql(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
