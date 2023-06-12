@@ -36,5 +36,16 @@ namespace ShoeperStar.Extensions
                     .ThenInclude(x => x.Variant)
                     .ThenInclude(x => x.Shoe);
         }
+
+        public static IQueryable<Order> IncludeOrderNavigationFields(this IQueryable<Order> orders)
+        {
+            return orders
+                    .Include(o => o.User)
+                    .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Size)
+                    .ThenInclude(s => s.Variant)
+                    .ThenInclude(v => v.Shoe)
+                    .ThenInclude(s => s.Brand)
+        }
     }
 }
