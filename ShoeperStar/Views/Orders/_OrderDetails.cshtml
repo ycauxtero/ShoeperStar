@@ -1,0 +1,89 @@
+﻿@model OrderVM
+
+@if (User.IsInRole("Admin"))
+{
+    <div class="row pb-1">
+        <div class="col-sm-4">
+            <span class="font-weight-bold">Customer Name:</span>
+            <span>@Model.User.FirstName @Model.User.LastName</span>
+        </div>
+        <div class="col-sm-4 text-center">
+            <p class="m-0">
+                <span class="font-weight-bold">Delivery Address:</span>
+                <span>@Model.User.DeliveryAddress</span>
+            </p>
+
+        </div>
+        <div class="col-sm-4 text-right">
+            <p class="m-0">
+                <span class="font-weight-bold">Contact No.:</span>
+                <span>@Model.User.PhoneNumber</span>
+            </p>
+
+        </div>
+    </div>
+}
+
+<div class="row pb-2">
+    <div class="col-sm-6">
+        <span class="badge badge-secondary">@Model.OrderDate.ToString("yyyy MMM dd, h:mm tt")</span>
+    </div>
+    <div class="col-sm-6">
+        @if (User.IsInRole("Admin"))
+        {
+            await Html.RenderPartialAsync("_AdminOrders", Model);
+        }
+        else
+        {
+            await Html.RenderPartialAsync("_CustomerOrders", Model);
+        }
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Variant</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems)
+        {
+            var shoe = item.Size.Variant.Shoe;
+            <tr>
+                <td class="align-middle">@shoe.BrandName @shoe.Name</td>
+                <td>
+                    <span class="badge"
+                          style="background-color: @item.Size.Variant.ColorHex;
+                                                color: @item.Size.Variant.ColorHex;
+                                                border: 1px solid gray">
+                        --
+                    </span> <span>@item.Size.Value</span>
+                </td>
+                <td class="align-middle">@shoe.Price.ToString("c")</td>
+                <td class="align-middle">@item.Quantity</td>
+                @{
+                    var subTotal = shoe.Price * item.Quantity;
+                }
+                <td class="align-middle">@subTotal.ToString("c")</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2"></td>
+            <td><b>Total:</b></td>
+            @{
+                var total = Model.OrderItems.Select(x => x.Quantity * x.Size.Variant.Shoe.Price).Sum();
+            }
+            <td>
+                @total.ToString("c")
+            </td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
