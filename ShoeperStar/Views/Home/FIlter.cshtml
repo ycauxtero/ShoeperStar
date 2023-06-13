@@ -65,12 +65,12 @@
                                 <img src="@shoeVM.ImageURL" class="product-item-img" />
                             </div>
                             <div class="thumb-content">
-                                <p class="h4 text-secondary product-item-name">@shoeVM.Name</p>
+                                <p class="h4 text-secondary product-item-name" style="height: 43.2px">@shoeVM.Name</p>
                                 <div>
                                     <a class="text-decoration-none d-block h6 text-secondary text-center"
                                        asp-action="Filter" asp-route-brand="@shoeVM.BrandName">@shoeVM.BrandName</a>
                                 </div>
-                                <p class="product-item-price text-center mb-1"><span>@shoeVM.Price.ToString("c")</span></p>
+                                <p class="product-item-price text-center mb-1"><span>&#8369</span><span>@shoeVM.Price.ToString("#,#.#0")</span></p>
                                 <div class="star-rating text-center">
                                     <ul class="list-inline">
                                         <li class="list-inline-item"><i class="fa fa-star"></i></li>

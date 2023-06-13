@@ -64,12 +64,12 @@
                         --
                     </span> <span>@item.Size.Value</span>
                 </td>
-                <td class="align-middle">@shoe.Price.ToString("c")</td>
+                <td class="align-middle"><span>&#8369</span>@shoe.Price.ToString("#,#.#0")</td>
                 <td class="align-middle">@item.Quantity</td>
                 @{
                     var subTotal = shoe.Price * item.Quantity;
                 }
-                <td class="align-middle">@subTotal.ToString("c")</td>
+                <td class="align-middle"><span>&#8369</span>@subTotal.ToString("#,#.#0")</td>
             </tr>
         }
     </tbody>
@@ -81,7 +81,7 @@
                 var total = Model.OrderItems.Select(x => x.Quantity * x.Size.Variant.Shoe.Price).Sum();
             }
             <td>
-                @total.ToString("c")
+                <span>&#8369</span>@total.ToString("#,#.#0")
             </td>
             <td></td>
         </tr>

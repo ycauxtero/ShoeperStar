@@ -30,7 +30,7 @@
                         <td colspan="2"></td>
                         <td><b>Total:</b></td>
                         <td>
-                            @total.ToString("c")
+                            <span>&#8369</span>@total.ToString("#,#.#0")
                         </td>
                         <td></td>
                     </tr>
@@ -38,7 +38,7 @@
             </table>
 
             <div class="text-right">
-                <a class="btn btn-outline-success" asp-action="Checkout" asp-route-total="@total.ToString("0.00")">
+                <a class="btn btn-outline-success" asp-action="Checkout" asp-route-total="@total.ToString("#,#.00")">
                     Checkout
                 </a>
                 <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Filter">

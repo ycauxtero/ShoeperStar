@@ -15,7 +15,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 my-auto">
                     <img src="@Model.ImageURL" width="100%" alt="@Model.Name">
                 </div>
                 <div class="col-md-8">
@@ -38,7 +38,7 @@
                                 @Model.Catergory.Name
                             </a>
                         </p>
-                        <p class="card-text"><b>Price: </b>@Model.Price.ToString("c")</p>
+                        <p class="card-text"><b>Price: </b><span>&#8369</span>@Model.Price.ToString("#,#.#0")</p>
                         <p class="card-text">
                             <b>Color:  </b>
                             <span class="badge"
@@ -57,7 +57,7 @@
                             @foreach (var size in Model.Sizes)
                             {
                                 <a class="text-decoration-none"
-                                   href="/Home/Details/@hashIdService.EncodeInt(Model.SelectedVariant.Id)/@hashIdService.EncodeInt(size.Id)/@Model.Name.ToSlug()-@Model.SelectedVariant.Color.ToSlug()-@size.Value.ToSlug()">
+                                   href="/Shoes/Details/@hashIdService.EncodeInt(Model.SelectedVariant.Id)/@hashIdService.EncodeInt(size.Id)/@Model.Name.ToSlug()-@Model.SelectedVariant.Color.ToSlug()-@size.Value.ToSlug()">
                                     <span class="badge badge-light badge-pill">@size.Value</span>
 
                                 </a>
@@ -72,12 +72,12 @@
                                 if (defaultSelectedSize != null)
                                 {
                                     <a class="text-decoration-none"
-                                       href="/Home/Details/@hashIdService.EncodeInt(variant.Id)/@hashIdService.EncodeInt(defaultSelectedSize.Id)/@Model.Name.ToSlug()-@variant.Color.ToSlug()-@defaultSelectedSize.Value.ToSlug()">
+                                       href="/Shoes/Details/@hashIdService.EncodeInt(variant.Id)/@hashIdService.EncodeInt(defaultSelectedSize.Id)/@Model.Name.ToSlug()-@variant.Color.ToSlug()-@defaultSelectedSize.Value.ToSlug()">
                                         <span class="badge"
                                               style="background-color: @variant.ColorHex;
                                                         color: @variant.ColorHex;
                                                         border: 1px solid gray">--</span>
-                                        <span>@variant.Color</span>
+                                        <span class="text-dark">@variant.Color</span>
                                     </a>
                                 }
                             }
@@ -103,7 +103,7 @@
                                    asp-controller="Cart"
                                    asp-action="AddItemToCart"
                                    asp-route-shoeSizeId="@Model.SelectedSize.Id">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.Price.ToString("c"))
+                                    <i class="bi bi-cart-plus"></i> Add to Cart (Price <span>&#8369</span>@Model.Price.ToString("#,#.#0"))
                                 </a>
                             }
 
