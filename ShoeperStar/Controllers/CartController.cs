@@ -131,7 +131,7 @@ namespace ShoeperStar.Controllers
             mailBody.Append($@"<p>Good day Mr./Ms. {user.LastName}");
             mailBody.Append("<p>Kindly pay your order thru any of the options below.</p>");
             mailBody.Append($@"<p><span style='font-weight: bold;'>Order Expiry:</span> {order.PaymentExpiry.ToString("dd MMM yyyy h:mm tt")}</p>");
-            mailBody.Append($@"<p><span style='font-weight: bold;'>Amount: </span><span style='color:red;'>{total}</span></p>");
+            mailBody.Append($@"<p><span style='font-weight: bold;'>Amount: </span><span style='color:red;'>{total} PHP</span></p>");
             mailBody.Append("<br>");
             mailBody.Append("<p style='font-weight: bold;'>Payment Options:</p>");
             mailBody.Append($@"<p style='font-weight: bold; color:blue;'>GCASH:</p>");
