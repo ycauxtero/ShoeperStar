@@ -9,6 +9,7 @@ using System.Security.Claims;
 using EmailService;
 using System.Text;
 using Microsoft.AspNetCore.Http.Extensions;
+using ShoeperStar.Models.DTO;
 
 namespace ShoeperStar.Controllers
 {
@@ -100,9 +101,11 @@ namespace ShoeperStar.Controllers
             var cart = await _repositoryManager.CartItems.GetCartItems(userId, includeNavigationFields: true);
 
             var cartItemsToOrder = cart.Where(x => x.Size.Quantity > 0);
+            var cartItemToOrderDTO = _mapper.Map<IEnumerable<CartItemDTO>>(cartItemsToOrder);
 
             var order = _repositoryManager.Orders.CreateOrder(cartItemsToOrder, userId);
-            _repositoryManager.CartItems.DeleteCartItems(cart);
+            await _repositoryManager.Sizes.UpdateSizeStocksBasedOnOrderedQty(cartItemsToOrder);
+            await _repositoryManager.CartItems.DeleteCartItems(userId);
 
             await _repositoryManager.SaveAsync();
 
