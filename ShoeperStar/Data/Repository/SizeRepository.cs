@@ -2,6 +2,7 @@
 using ShoeperStar.Data.Contracts;
 using ShoeperStar.Extensions;
 using ShoeperStar.Models;
+using ShoeperStar.Models.DTO;
 
 namespace ShoeperStar.Data.Repository
 {
@@ -66,6 +67,19 @@ namespace ShoeperStar.Data.Repository
         public void UpdateSizes(IEnumerable<Size> sizes)
         {
             UpdateMultiple(sizes);
+        }
+
+        public async Task UpdateSizeStocksBasedOnOrderedQty(IEnumerable<CartItem> cartItems)
+        {
+            List<Size> sizesForUpdate = new List<Size>();
+
+            foreach (var cartItem in cartItems)
+            {
+                var size = await GetSizeAsync(cartItem.Size.Id, trackChanges: false);
+                size.Quantity -= cartItem.Qty;
+                UpdateSize(size);
+            }
+
         }
     }
 }

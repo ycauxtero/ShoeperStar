@@ -1,4 +1,5 @@
 ﻿using ShoeperStar.Models;
+using ShoeperStar.Models.DTO;
 
 namespace ShoeperStar.Data.Contracts
 {
@@ -11,5 +12,6 @@ namespace ShoeperStar.Data.Contracts
         void DeleteSize(Size size);
         void UpdateSize(Size size);
         void UpdateSizes(IEnumerable<Size> sizes);
+        Task UpdateSizeStocksBasedOnOrderedQty(IEnumerable<CartItem> cartItems);
     }
 }
