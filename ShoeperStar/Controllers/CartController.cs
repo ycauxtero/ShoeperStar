@@ -101,7 +101,6 @@ namespace ShoeperStar.Controllers
             var cart = await _repositoryManager.CartItems.GetCartItems(userId, includeNavigationFields: true);
 
             var cartItemsToOrder = cart.Where(x => x.Size.Quantity > 0);
-            var cartItemToOrderDTO = _mapper.Map<IEnumerable<CartItemDTO>>(cartItemsToOrder);
 
             var order = _repositoryManager.Orders.CreateOrder(cartItemsToOrder, userId);
             await _repositoryManager.Sizes.UpdateSizeStocksBasedOnOrderedQty(cartItemsToOrder);
