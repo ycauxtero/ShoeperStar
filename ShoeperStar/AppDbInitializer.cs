@@ -296,7 +296,7 @@ namespace ShoeperStar
                         UserName = "admin-user",
                         Email = adminUserEmail,
                         EmailConfirmed = true,
-                        DeliveryAddress = "Pusok, Lapu-lapu City, Cebu"
+                        DeliveryAddress = "Lapu-lapu City, Cebu"
                     };
                     await userManager.CreateAsync(newAdminUser, "Coding@1234?");
                     await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
@@ -315,7 +315,8 @@ namespace ShoeperStar
                         UserName = "app-user",
                         Email = appUserEmail,
                         EmailConfirmed = true,
-                        DeliveryAddress = "Pusok, Lapu-lapu City, Cebu"
+                        PhoneNumber = "09123457890",
+                        DeliveryAddress = "Lapu-lapu City, Cebu"
                     };
                     await userManager.CreateAsync(newAppUser, "Coding@1234?");
                     await userManager.AddToRoleAsync(newAppUser, UserRoles.User);
