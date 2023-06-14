@@ -22,19 +22,19 @@
                     <div class="card-body">
                         <p class="card-text">
                             <b>Brand: </b>
-                            <a asp-controller="Cinemas" asp-action="Details" asp-route-id="@Model.Brand.Id">
+                            <a asp-action="Filter" asp-route-brandfilter="@Model.Brand.Id">
                                 @Model.Brand.Name
                             </a>
                         </p>
                         <p class="card-text">
                             <b>Gender: </b>
-                            <a asp-controller="Producers" asp-action="Details" asp-route-id="@Model.Gender.Id">
+                            <a asp-action="Filter" asp-route-genderfilter="@Model.Gender.Id">
                                 @Model.Gender.Name
                             </a>
                         </p>
                         <p class="card-text">
                             <b>Category: </b>
-                            <a asp-controller="Producers" asp-action="Details" asp-route-id="@Model.Catergory.Id">
+                            <a asp-action="Filter" asp-route-categoryfilter="@Model.Catergory.Id">
                                 @Model.Catergory.Name
                             </a>
                         </p>
