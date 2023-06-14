@@ -95,7 +95,9 @@ namespace ShoeperStar.Controllers
                                                 !x.IsPaid)
                                       .ToList();
 
-            return View(expiredOrders);
+            var expiredOrdersVM = _mapper.Map<IEnumerable<OrderVM>>(expiredOrders);
+
+            return View(expiredOrdersVM);
         }
 
         [Authorize(Roles = UserRoles.Admin)]
@@ -108,6 +110,40 @@ namespace ShoeperStar.Controllers
                                       .ToList();
 
             await CancelExpiredOrdersAndReturnStocksToInventory(expiredOrders);
+
+            return RedirectToAction(nameof(Expired));
+        }
+
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<IActionResult> CancelOrder(Guid id)
+        {
+            var order = await _repositoryManager.Orders.GetOrderAsync(id, trackChanges: false);
+
+            var sizesForUpdate = new List<Size>();
+            foreach (var orderitem in order.OrderItems)
+            {
+                var size = await _repositoryManager.Sizes.GetSizeAsync(orderitem.SizeId, trackChanges: false);
+                size.Quantity += orderitem.Quantity;
+
+                sizesForUpdate.Add(size);
+            }
+
+            var orderToUpdate = new Order
+            {
+                Id = order.Id,
+                IsCancelled = true,
+                IsPaid = order.IsPaid,
+                IsShipped = order.IsShipped,
+                OrderDate = order.OrderDate,
+                OrderRecieved = order.OrderRecieved,
+                PaymentExpiry = order.PaymentExpiry,
+                UserId = order.UserId
+            };
+
+            _repositoryManager.Orders.UpdateOrder(orderToUpdate);
+            _repositoryManager.Sizes.UpdateSizes(sizesForUpdate);
+
+            await _repositoryManager.SaveAsync();
 
             return RedirectToAction(nameof(Expired));
         }
