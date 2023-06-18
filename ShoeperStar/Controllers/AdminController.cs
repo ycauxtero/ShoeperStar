@@ -190,6 +190,7 @@ namespace ShoeperStar.Controllers
             return View(shoeForCreationVM);
         }
 
+        [Route("Shoe/Create")]
         [HttpPost]
         public async Task<IActionResult> Create(ShoeForCreationVM shoeVM)
         {
